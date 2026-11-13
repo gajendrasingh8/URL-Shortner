@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    const ROLE_SUPER_ADMIN = 'SuperAdmin';
+    const ROLE_ADMIN = 'Admin';
+    const ROLE_MEMBER = 'Member';
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -45,4 +48,31 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->role->name === self::ROLE_SUPER_ADMIN;
+    }
+
+    public function isAdmin()
+    {
+        return $this->role->name === self::ROLE_ADMIN;
+    }
+
+    public function isMember()
+    {
+        return $this->role->name === self::ROLE_MEMBER;
+    }
+
+    public function shortUrls()
+    {
+        return  $this->hasMany(ShortUrl::class);
+    }
+
+
 }

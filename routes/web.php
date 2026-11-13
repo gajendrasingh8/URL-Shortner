@@ -39,16 +39,10 @@ Route::middleware(['auth'])->group(function() {
     });
     Route::middleware('role:Admin')->group(function(){
         Route::get('/team-members', [TeamMemberController::class, 'index'])->name('team-members.index');
-        Route::get('/team/invite', function(){
-            return 'Invite team meamber';
-        });
     });
     Route::middleware('role:SuperAdmin,Admin')->group(function() {
         Route::get('/invitations/create', [InvitationController::class, 'create'])->name('invitations.create');
         Route::post('/invitations', [InvitationController::class,'store'])->name('invitations.store');
        
-        Route::get('/reports', function(){
-            return 'Reports';
-        });
     });
 });

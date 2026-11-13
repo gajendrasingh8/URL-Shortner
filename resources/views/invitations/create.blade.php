@@ -10,7 +10,9 @@
             {{ auth()->user()->isSuperAdmin() ? 'Invite Admin' : 'Invite Team Member' }}
         </h3>
         <p class="text-muted mb-0">
-            Send an invitation to join your organization.
+            {{ auth()->user()->isSuperAdmin()
+                ? 'Invite an Admin to a company.'
+                : 'Invite an Admin or Member to your company.' }}
         </p>
     </div>
 

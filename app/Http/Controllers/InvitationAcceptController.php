@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invitation;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class InvitationAcceptController extends Controller
 {
@@ -32,6 +33,13 @@ class InvitationAcceptController extends Controller
                 $query->whereNull('expires_at')->orWhere('expires_at', '>', now());
             })
             ->lockForUpdate()->firstOrFail();
+
+            if (User::whereRaw('LOWER(email) = ?', [strtolower($invitation->email)])->exists()) {
+                throw ValidationException::withMessages([
+                    'email' => 'An account already exists for this email',
+                ]);
+            }
+
             $user = new User();
             $user->name = $validated['name'];
             $user->email = $invitation->email;

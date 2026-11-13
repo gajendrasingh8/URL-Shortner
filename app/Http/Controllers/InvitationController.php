@@ -53,13 +53,32 @@ class InvitationController extends Controller
         }
 
         $validated = $request->validate($rules);
+        $email = strtolower(trim($validated['email']));
+
+        if (User::whereRaw('LOWER(email) = ?', [$email])->exists()) {
+            return back()->withErrors(['email' => 'An account already exists for this email.'])
+                ->withInput();
+        }
+
+        $activeInvitation = Invitation::whereRaw('LOWER(email) = ?', [$email])
+            ->whereNull('accepted_at')
+            ->where(function ($query) {
+                $query->whereNull('expires_at')->orWhere('expires_at', '>', now());
+            })
+            ->exists();
+
+        if ($activeInvitation) {
+            return back()->withErrors(['email' => 'An active invitation already exists for this email.'])
+                ->withInput();
+        }
+
         $role = Role::where('name', $validated['role'])->firstOrFail();
         $companyId = $user->isSuperAdmin() ? $validated['company_id'] : $user->company_id;
 
         abort_if(!$companyId, 403);
 
         $invitation = Invitation::create([
-            'email' => $validated['email'],
+            'email' => $email,
             'role_id' => $role->id,
             'company_id' => $companyId,
             'invited_by' => $user->id,

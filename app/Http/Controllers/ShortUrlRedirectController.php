@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\ShortUrl;
-use Illuminate\Http\Request;
 
 class ShortUrlRedirectController extends Controller
 {

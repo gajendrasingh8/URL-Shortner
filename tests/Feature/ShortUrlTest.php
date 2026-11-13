@@ -199,4 +199,41 @@ class ShortUrlTest extends TestCase
             ->get(route('short-urls.redirect', $shortUrl->short_code))
             ->assertRedirect($originalUrl);
     }
+
+    public function test_super_admin_can_see_short_urls_from_all_companies(): void
+    {
+        $company1 = Company::create([
+            'name' => 'Company One',
+        ]);
+
+        $company2 = Company::create([
+            'name' => 'Company Two',
+        ]);
+
+        $superAdmin = $this->createUser('SuperAdmin');
+        $admin1 = $this->createUser('Admin', $company1);
+        $admin2 = $this->createUser('Admin', $company2);
+
+        $shortUrl1 = $this->createShortUrl(
+            $admin1,
+            'https://example.com/company-one',
+            'company01'
+        );
+
+        $shortUrl2 = $this->createShortUrl(
+            $admin2,
+            'https://example.com/company-two',
+            'company02'
+        );
+
+        $response = $this->actingAs($superAdmin)
+            ->get(route('short-urls.index'));
+
+        $response->assertOk();
+
+        $response->assertSee($shortUrl1->short_code);
+        $response->assertSee($shortUrl2->short_code);
+        $response->assertSee('Company One');
+        $response->assertSee('Company Two');
+    }
 }

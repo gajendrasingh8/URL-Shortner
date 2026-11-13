@@ -12,7 +12,7 @@ class TeamMemberController extends Controller
         $user = auth()->user();
         abort_unless($user->isAdmin(), 403);
         
-        $members = User::with('role')->where('company_id', $user->company_id)->latest()->paginate(10);
+        $members = User::with('role')->withCount('shortUrls')->where('company_id', $user->company_id)->where('id', '!=', $user->id)->latest()->paginate(10);
         
         return view('team-members.index', compact('members'));
     }

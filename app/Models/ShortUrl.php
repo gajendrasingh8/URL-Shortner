@@ -16,6 +16,10 @@ class ShortUrl extends Model
 
     public function scopeVisibleTo(Builder $query, User $user)
     {
+        if ($user->isSuperAdmin()) {
+            return $query;
+        }
+        
         if ($user->isAdmin()) {
             return $query->whereHas('user', function($q) use ($user) {
                 $q->where('company_id', $user->company_id);

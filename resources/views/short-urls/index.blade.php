@@ -10,10 +10,11 @@
             <h3 class="mb-1">Generated Short URLs</h3>
             <p class="text-muted mb-0">Manage your shortened URLs</p>
         </div>
-
-        <a href="{{ route('short-urls.create') }}" class="btn btn-primary">
-            + Create Short URL
-        </a>
+        @if (auth()->user()->isAdmin() || auth()->user()->isMember())
+            <a href="{{ route('short-urls.create') }}" class="btn btn-primary">
+                + Create Short URL
+            </a>
+        @endif
     </div>
 
     @if (session('short_link'))
@@ -38,6 +39,9 @@
 
                             @if (auth()->user()->isAdmin())
                                 <th>Created By</th>
+                            @endif
+                            @if(auth()->user()->isSuperAdmin())
+                                <th>Company</th>
                             @endif
 
                             <th>Created At</th>
@@ -66,6 +70,9 @@
 
                                 @if (auth()->user()->isAdmin())
                                     <td>{{ $shortUrl->user->name }}</td>
+                                @endif
+                                @if(auth()->user()->isSuperAdmin())
+                                    <td>{{ $shortUrl->user->company->name ?? '-' }}</td>
                                 @endif
 
                                 <td>{{ $shortUrl->created_at->format('d M Y') }}</td>

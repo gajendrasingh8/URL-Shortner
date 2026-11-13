@@ -33,8 +33,6 @@ php artisan serve
 
 The app runs at `http://127.0.0.1:8000`.
 
-If the migration fails with "Specified key was too long", set the `engine` of the mysql connection to `InnoDB` in `config/database.php`.
-
 ## SuperAdmin login
 
 - Email: `gajendraadmin@gmail.com`

@@ -12,7 +12,7 @@ class ShortUrlController extends Controller
     {
         $this->authorize('viewAny', ShortUrl::class);
 
-        $shortUrls = ShortUrl::with('user')->visibleTo(auth()->user())->latest()->paginate(10);
+        $shortUrls = ShortUrl::with('user.company')->visibleTo(auth()->user())->latest()->paginate(10);
 
         return view('short-urls.index', compact('shortUrls'));
     }

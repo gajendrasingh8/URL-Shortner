@@ -54,6 +54,16 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function shortUrls()
+    {
+        return  $this->hasMany(ShortUrl::class);
+    }
+
     public function isSuperAdmin()
     {
         return $this->role->name === self::ROLE_SUPER_ADMIN;
@@ -67,11 +77,6 @@ class User extends Authenticatable
     public function isMember()
     {
         return $this->role->name === self::ROLE_MEMBER;
-    }
-
-    public function shortUrls()
-    {
-        return  $this->hasMany(ShortUrl::class);
     }
 
 

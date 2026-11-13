@@ -13,7 +13,7 @@
     <div class="card shadow-sm" style="max-width: 700px;">
         <div class="card-body p-4">
 
-            <form action="{{ url('short-urls.store') }}" method="POST">
+            <form action="{{ route('short-urls.store') }}" method="POST">
                 @csrf
 
                 <div class="mb-3">

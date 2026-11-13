@@ -6,10 +6,11 @@
 @section('content')
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="mb-1">Companies</h3>
-            <p class="text-muted mb-0">Manage registered companies</p>
-        </div>
+        <h2>Companies</h2>
+
+        <a href="{{ route('companies.create') }}" class="btn btn-primary">
+            Create Company
+        </a>
     </div>
 
     <div class="card shadow-sm">
@@ -21,6 +22,7 @@
                         <tr>
                             <th>#</th>
                             <th>Company Name</th>
+                            <th>Total Users</th>
                             <th>Created At</th>
                         </tr>
                     </thead>
@@ -30,6 +32,7 @@
                             <tr>
                                 <td>{{ $companies->firstItem() + $loop->index }}</td>
                                 <td>{{ $company->name }}</td>
+                                <td>{{ $company->users_count }}</td>
                                 <td>{{ $company->created_at->format('d M Y') }}</td>
                             </tr>
                         @empty

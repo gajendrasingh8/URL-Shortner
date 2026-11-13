@@ -13,7 +13,7 @@ class ShortUrlPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin() || $user->isMember();
+        return $user->isSuperAdmin() || $user->isAdmin() || $user->isMember();
     }
 
     /**

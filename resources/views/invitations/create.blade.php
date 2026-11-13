@@ -19,7 +19,6 @@
 
             @if (session('invitation_link'))
                 <div class="alert alert-success mb-4">
-                    <h5 class="alert-heading">Invitation Created Successfully!</h5>
                     <p class="mb-2">Share this link with the invited user:</p>
 
                     <div class="input-group">

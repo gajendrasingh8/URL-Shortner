@@ -7,20 +7,35 @@
 
     @if (auth()->user()->isSuperAdmin())
         <h3 class="mb-4">Super Admin Dashboard</h3>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5>Manage Companies</h5>
+                        <a href="{{ route('companies.index') }}" class="btn btn-primary btn-sm">
+                            View Companies
+                        </a>
+                        <a href="{{ route('companies.create') }}" class="btn btn-primary btn-sm">
+                            Create Company
+                        </a>
 
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h5>Manage Companies</h5>
-                <a href="{{ route('companies.index') }}" class="btn btn-primary btn-sm">
-                    View Companies
-                </a>
-                <a href="{{ route('companies.create') }}" class="btn btn-primary btn-sm">
-                    Create Company
-                </a>
+                        <a href="{{ route('invitations.create') }}" class="btn btn-outline-primary btn-sm">
+                            Invite Admin
+                        </a>
+                    </div>
+                </div>
+            </div>
+             <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">All Short URLs</h5>
+                        <p class="card-text">View short URLs from all companies.</p>
 
-                <a href="{{ route('invitations.create') }}" class="btn btn-outline-primary btn-sm">
-                    Invite Admin
-                </a>
+                        <a href="{{ route('short-urls.index') }}" class="btn btn-primary">
+                            View All URLs
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 

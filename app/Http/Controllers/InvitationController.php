@@ -11,6 +11,29 @@ use Illuminate\Support\Str;
 
 class InvitationController extends Controller
 {
+    public function index()
+    {
+        $user = auth()->user();
+
+        $query = Invitation::with(['company', 'role'])
+            ->latest();
+
+        if ($user->isSuperAdmin()) {
+            $query->whereHas('role', function ($q) {
+                $q->where('name', 'Admin');
+            });
+        } elseif ($user->isAdmin()) {
+            $query->where('company_id', $user->company_id)
+                ->where('invited_by', $user->id);
+        } else {
+            abort(403);
+        }
+
+        $invitations = $query->paginate(10);
+
+        return view('invitations.index', compact('invitations'));
+    }
+
     public function create()
     {
         $user = auth()->user();

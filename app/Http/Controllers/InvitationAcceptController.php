@@ -6,6 +6,7 @@ use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -28,7 +29,7 @@ class InvitationAcceptController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        DB::transaction(function () use ($token, $validated) {
+        $user = DB::transaction(function () use ($token, $validated) {
             $invitation = Invitation::where('token', $token)->whereNull('accepted_at')->where(function($query) {
                 $query->whereNull('expires_at')->orWhere('expires_at', '>', now());
             })
@@ -40,18 +41,21 @@ class InvitationAcceptController extends Controller
                 ]);
             }
 
-            $user = new User();
-            $user->name = $validated['name'];
-            $user->email = $invitation->email;
-            $user->password = Hash::make($validated['password']);
-            $user->role_id = $invitation->role_id;
-            $user->company_id = $invitation->company_id;
-            $user->save();
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $invitation->email,
+                'password' => Hash::make($validated['password']),
+                'role_id' => $invitation->role_id,
+                'company_id' => $invitation->company_id,
+            ]);
 
             $invitation->accepted_at = now();
             $invitation->save();
-        });
 
-        return redirect()->route('login')->with('success', 'Registration completed, please login');
+            return $user;
+        });
+        Auth::login($user);
+        $request->session()->regenerate();
+        return redirect()->intended('/dashboard');
     }
 }

@@ -14,12 +14,12 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validates = $request->validate([
+        $validated = $request->validate([
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        if (Auth::attempt($validates)) {
+        if (Auth::attempt($validated)) {
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
         }

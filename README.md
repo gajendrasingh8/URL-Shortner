@@ -24,8 +24,7 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Create an empty MySQL database and set `DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD` in `.env`. Then run:
-
+Uncomment the DB_* lines in .env, then create an empty MySQL database and set DB_DATABASE, DB_USERNAME and DB_PASSWORD. Then run:
 ```bash
 php artisan migrate --seed
 php artisan serve

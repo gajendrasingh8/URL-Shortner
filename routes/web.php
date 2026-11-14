@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function() {
     Route::middleware('role:SuperAdmin,Admin')->group(function() {
         Route::get('/invitations/create', [InvitationController::class, 'create'])->name('invitations.create');
         Route::post('/invitations', [InvitationController::class,'store'])->name('invitations.store');
-       
+        Route::get('/invitations', [InvitationController::class, 'index'])
+        ->name('invitations.index');
     });
 });

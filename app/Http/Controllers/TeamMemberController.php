@@ -16,9 +16,7 @@ class TeamMemberController extends Controller
         $members = User::with('role')
             ->withCount('shortUrls')
             ->where('company_id', $user->company_id)
-            ->whereHas('role', function ($query) {
-                $query->where('name', User::ROLE_MEMBER);
-            })
+            ->where('id', '!=', $user->id)
             ->latest()
             ->paginate(10);
         

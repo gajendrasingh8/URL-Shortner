@@ -22,6 +22,9 @@
                         <a href="{{ route('invitations.create') }}" class="btn btn-outline-primary btn-sm">
                             Invite Admin
                         </a>
+                        <a href="{{ route('invitations.index') }}" class="btn btn-outline-primary btn-sm">
+                            View Admins
+                        </a>
                     </div>
                 </div>
             </div>
@@ -49,6 +52,9 @@
                         <h5>Team Members</h5>
                         <a href="{{ route('invitations.create') }}" class="btn btn-primary btn-sm">
                             Invite User
+                        </a>
+                        <a href="{{ route('invitations.index') }}" class="btn btn-outline-primary btn-sm">
+                            View Invited user
                         </a>
                         <a href="{{ route('team-members.index') }}" class="btn btn-outline-primary btn-sm">
                             View Team Members
